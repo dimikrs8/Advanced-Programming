@@ -6,3 +6,9 @@ from data_access.db import create_db_and_tables
 def setup_app() -> None:
     create_db_and_tables()
     app.storage.secret_key = config.SECRET_KEY
+    from ui.pages import auth_pages
+    @ui.page("/")
+    def root():
+        from ui.layout import get_session_user
+        if get_session_user(): ui.navigate.to("/dashboard")
+        else: ui.navigate.to("/login")
